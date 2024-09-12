@@ -4,28 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>广西大学学生科技协会</title>
-      <!-- favicon 文件引用 -->
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <!-- 外部库和样式 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        body, html {
+        /* 页眉样式 */
+        .header {
+            width: 100%;
+            padding: 15px 0;
+            background-color: rgba(51, 51, 51, 0.9); /* 半透明效果 */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header .logo-container {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+
+        .header .logo-container img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .header .logo-container .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .header nav {
+            display: flex;
+            gap: 30px;
+            margin-right: 20px;
+        }
+
+        .header nav a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .header nav a:hover {
+            color: #00dbde;
+        }
+
+        /* 页面内容 */
+        body {
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            height: 100%;
             background-color: #0a192f;
             color: #ffffff;
-            overflow: hidden;
-            position: relative;
+            padding-top: 70px; /* 预留顶部位置以避免被页眉遮挡 */
         }
 
-        .container {
+        .hero {
             text-align: center;
             padding: 100px 20px;
-            z-index: 1;
-            position: relative;
         }
 
         h1 {
@@ -36,22 +79,35 @@
             background: -webkit-linear-gradient(45deg, #00dbde, #fc00ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: glow 1.5s ease-in-out infinite alternate;
+            animation: fadeInDown 2s ease-in-out forwards;
         }
 
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 10px #00dbde, 0 0 20px #fc00ff, 0 0 30px #fc00ff, 0 0 40px #fc00ff;
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
             }
-            to {
-                text-shadow: 0 0 20px #00dbde, 0 0 30px #fc00ff, 0 0 40px #fc00ff, 0 0 50px #fc00ff;
+            100% {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
         p {
             font-size: 24px;
             margin-top: 20px;
-            animation: fadeInUp 2s;
+            animation: fadeInUp 2s ease-in-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .icon {
@@ -72,10 +128,23 @@
             }
         }
 
-        footer {
-            margin-top: 50px;
-            font-size: 14px;
-            color: #ccc;
+        .button-link {
+            display: inline-block;
+            padding: 15px 30px;
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffffff;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .button-link:hover {
+            background: linear-gradient(45deg, #fc00ff, #00dbde);
+            transform: scale(1.05);
         }
 
         /* 粒子背景效果 */
@@ -88,46 +157,41 @@
             background: #0a192f;
             z-index: 0;
         }
-
-        .typewriter {
-            font-size: 28px;
-            color: #ffffff;
-            overflow: hidden;
-            border-right: .15em solid #ffffff;
-            white-space: nowrap;
-            margin: 0 auto;
-            letter-spacing: .15em;
-            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
-        }
-
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: white; }
-        }
     </style>
 </head>
 <body>
+    <!-- 粒子背景 -->
     <div class="particles" id="particles-js"></div>
-    <div class="container">
-        <h1 class="animate__animated animate__fadeInDown">广西大学学生科技协会</h1>
-        <p class="typewriter">探索创新，改变未来</p>
-        <div class="animate__animated animate__fadeInUp">
+
+    <!-- 页眉 -->
+    <header class="header">
+        <div class="logo-container">
+            <!-- 在页眉中嵌入logo -->
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+            <span class="logo-text">GXU Tech Club</span>
+        </div>
+        <nav>
+            <a href="#about">实用工具</a>
+            <a href="https://softwareupdate.vmware.com/cds/vmw-desktop/ws/17.6.0/24238078/windows/core/VMware-workstation-17.6.0-24238078.exe.tar" download>软件下载</a>
+            <a href="#contact">科协资讯</a>
+        </nav>
+    </header>
+
+    <!-- 页面主要内容 -->
+    <div class="hero">
+        <h1 class="animate__animated">广西大学学生科技协会</h1>
+        <p>“同吹西大科技风，共创学生科协史”</p>
+        <div>
             <i class="fas fa-robot icon"></i>
             <i class="fas fa-microchip icon"></i>
             <i class="fas fa-lightbulb icon"></i>
         </div>
+        <a href="https://example.com" class="button-link">点击这里访问</a>
     </div>
-    <footer class="animate__animated animate__fadeIn">© 2024 广西大学学生科技协会</footer>
 
     <!-- 粒子背景脚本 -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // 初始化粒子效果
         particlesJS("particles-js", {
             "particles": {
                 "number": {
@@ -152,23 +216,11 @@
                 },
                 "opacity": {
                     "value": 0.5,
-                    "random": false,
-                    "anim": {
-                        "enable": false,
-                        "speed": 1,
-                        "opacity_min": 0.1,
-                        "sync": false
-                    }
+                    "random": false
                 },
                 "size": {
                     "value": 5,
-                    "random": true,
-                    "anim": {
-                        "enable": false,
-                        "speed": 40,
-                        "size_min": 0.1,
-                        "sync": false
-                    }
+                    "random": true
                 },
                 "line_linked": {
                     "enable": true,
@@ -179,17 +231,7 @@
                 },
                 "move": {
                     "enable": true,
-                    "speed": 6,
-                    "direction": "none",
-                    "random": false,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                    "attract": {
-                        "enable": false,
-                        "rotateX": 600,
-                        "rotateY": 1200
-                    }
+                    "speed": 6
                 }
             },
             "interactivity": {
@@ -204,34 +246,8 @@
                         "mode": "push"
                     },
                     "resize": true
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 400,
-                        "line_linked": {
-                            "opacity": 1
-                        }
-                    },
-                    "bubble": {
-                        "distance": 400,
-                        "size": 40,
-                        "duration": 2,
-                        "opacity": 8,
-                        "speed": 3
-                    },
-                    "repulse": {
-                        "distance": 200,
-                        "duration": 0.4
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    },
-                    "remove": {
-                        "particles_nb": 2
-                    }
                 }
-            },
-            "retina_detect": true
+            }
         });
     </script>
 </body>
